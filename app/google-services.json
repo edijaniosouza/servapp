@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "131708212854",
+    "project_id": "servapp-login-api",
+    "storage_bucket": "servapp-login-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131708212854:android:fd520f65054ce81251f157",
+        "android_client_info": {
+          "package_name": "br.com.edijanio.servapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131708212854-9d1m2c39bop10jnb474hmqup7d1ites0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuEFR_aBo_lwBUanAWUkbdkx6k6ypU8dg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131708212854-9d1m2c39bop10jnb474hmqup7d1ites0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

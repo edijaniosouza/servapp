@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.edijanio.servapp.repository.FirebaseRepository
 import br.com.edijanio.servapp.ui.theme.ServAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -30,7 +32,6 @@ class MainActivity : ComponentActivity() {
             ServAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.padding(20.dp)) {
-
                     Login(auth)
                 }
             }
@@ -45,25 +46,12 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, "user already connected", Toast.LENGTH_SHORT).show()
         }
     }
-
-    fun loginWithEmail(email: String, password: String){
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) {task ->
-            if(task.isSuccessful){
-                Log.d("firebase_auth", "signInWithEmail:success - ${auth.currentUser}")
-
-            } else{
-                Log.d("firebase_auth", "signInWithEmail:fail - ${auth.currentUser}")
-            }
-        }
-    }
 }
 
 @Composable
 fun Login(auth: FirebaseAuth) {
-
     Column() {
         Text(text = "Email: ", Modifier.padding(vertical = 10.dp))
-
         var email by remember { mutableStateOf("") }
         TextField(
             value = email,
@@ -79,10 +67,11 @@ fun Login(auth: FirebaseAuth) {
             label = { Text("Insira sua senha") },
             modifier = Modifier.padding(vertical = 10.dp)
         )
-
         Button(onClick = {
-            Log.d("firebase_auth", "$email | $password")
-            loginWithEmailAndPassword(email, password, auth)
+            val fire = Firebase
+            val repository = FirebaseRepository(fire)
+            repository.loginUser(email, password)
+           // loginWithEmailAndPassword(email, password, auth)
         })
         {
             Icon(Icons.Filled.Add, contentDescription = "button")
@@ -90,14 +79,14 @@ fun Login(auth: FirebaseAuth) {
     }
 }
 
-fun loginWithEmailAndPassword (email: String, password: String, auth: FirebaseAuth){
+fun loginWithEmailAndPassword(email: String, password: String, auth: FirebaseAuth) {
     if (email.isNotEmpty()) {
         if (password.isNotEmpty()) {
-            auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(){task ->
-                if(task.isSuccessful){
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
                     Log.d("firebase_auth", "signInWithEmail:success - ${auth.currentUser}")
-
-                } else{
+                } else {
                     Log.d("firebase_auth", "signInWithEmail:fail - ${auth.currentUser}")
                 }
             }

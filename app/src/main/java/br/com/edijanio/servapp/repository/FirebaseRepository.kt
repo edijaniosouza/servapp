@@ -2,6 +2,7 @@ package br.com.edijanio.servapp.repository
 
 import android.util.Log
 import br.com.edijanio.servapp.models.User
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -10,18 +11,16 @@ class FirebaseRepository(
 ) {
     val auth = firebase.auth
 
-    fun loginUser(email: String, password: String): User {
-        var user = User()
-        Log.d("firebase", "1: ${user.name}")
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
-            user = User(
+    fun loginUser(email: String, password: String){
+        val t = mutableListOf<User>()
+
+        auth.signInWithEmailAndPassword("edijanio.souza@hotmail.com", "123456").addOnSuccessListener {
+            t.add(User(
                 name = it.user,
                 userInfo = it.additionalUserInfo,
                 credential = it.credential
-            )
+            ))
         }
-        Log.d("firebase", "2: ${user.name}")
-
-        return user
+        Log.d("firebase","$t")
     }
 }

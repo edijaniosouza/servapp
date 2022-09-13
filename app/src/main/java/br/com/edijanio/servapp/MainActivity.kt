@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -15,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.edijanio.servapp.repository.FirebaseRepository
 import br.com.edijanio.servapp.ui.theme.ServAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -68,10 +66,7 @@ fun Login(auth: FirebaseAuth) {
             modifier = Modifier.padding(vertical = 10.dp)
         )
         Button(onClick = {
-            val fire = Firebase
-            val repository = FirebaseRepository(fire)
-            repository.loginUser(email, password)
-           // loginWithEmailAndPassword(email, password, auth)
+
         })
         {
             Icon(Icons.Filled.Add, contentDescription = "button")

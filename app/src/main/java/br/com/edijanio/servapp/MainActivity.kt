@@ -1,5 +1,6 @@
 package br.com.edijanio.servapp
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material.icons.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.Check
@@ -33,7 +35,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import br.com.edijanio.servapp.repository.ChamadosRepository
 import br.com.edijanio.servapp.ui.theme.ServAppTheme
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -45,6 +49,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
 
+
         setContent {
             ServAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -55,6 +60,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        ChamadosRepository().getWeather()
+    }
 }
 
 @Composable
@@ -152,6 +161,10 @@ fun Login(auth: FirebaseAuth, navController: NavHostController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         )
 
+        ClickableText(text = AnnotatedString("Esqueci a senha!"), onClick = {
+            navController.navigate("register")
+        })
+
         Button(onClick = {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -166,9 +179,6 @@ fun Login(auth: FirebaseAuth, navController: NavHostController) {
             Icon(Icons.Filled.Send, contentDescription = "button")
         }
 
-        ClickableText(text = AnnotatedString("Esqueci a senha!"), onClick = {
-            navController.navigate("register")
-        })
 
     }
 }
@@ -183,7 +193,6 @@ fun MainScreen(auth: FirebaseAuth, navController: NavHostController) {
         val authUser = auth.currentUser
 
         if (authUser != null) {
-
             Text(
                 text = if(authUser.displayName != "" ) "${authUser.displayName}" else "Usuario",
                 modifier = Modifier.align(Alignment.CenterHorizontally)
